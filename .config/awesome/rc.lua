@@ -191,6 +191,8 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+local mysystray = wibox.widget.systray()
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -224,9 +226,10 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s,
-    				shape = function(cr, width, height)
+    			      shape = function(cr, width, height)
     						gears.shape.rounded_rect(cr, width, height, 10)
-					end, })
+					end, bg = "#00000000",
+			      height = 27, })
 
     -- Create a spacer
     
@@ -234,20 +237,33 @@ awful.screen.connect_for_each_screen(function(s)
 	widget = wibox.widget.spacer,
 	orientation = "horizontal",
 	forced_width = 10,
-	opacity = 1,
+	opacity = 0,
     })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+          layout = wibox.container.margin,
+	  top = 3,
+	  left = 2,
+	  right = 2,
+	  {
+            layout = wibox.container.background,
+	    bg = beautiful.bg_normal,
+	    shape = function(cr, width, height)
+              gears.shape.rounded_rect(cr, width, height, 10)
+            end,
+	    shape_border_width = 1,
+	    shape_border_color = beautiful.border_focus,
+	  {
+          layout = wibox.layout.align.horizontal,
+          { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
 	    myspacer,
             s.mytaglist,
             s.mypromptbox,
-        },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
+          },
+          s.mytasklist, -- Middle widget
+          { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 	    net_speed_widget(),
 	    net_widgets.indicator({
@@ -263,11 +279,13 @@ awful.screen.connect_for_each_screen(function(s)
 		color_buf = '#00f'
 	    }),
 	    cpu_widget(),
-            wibox.widget.systray(),
+            mysystray,
             mytextclock,
 	    s.mylayoutbox,
 	    myspacer,
+          },
         },
+        }
     }
 end)
 -- }}}

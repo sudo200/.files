@@ -30,9 +30,6 @@ theme.border_normal = theme.bg_normal
 theme.border_focus  = theme.bg_focus
 theme.border_marked = "#91231c"
 
-theme.wibar_border_width = dpi(1)
-theme.wibar_border_color = theme.border_normal
-
 -- There are other variable sets
 -- overriding the theme one when
 -- defined, the sets are:
