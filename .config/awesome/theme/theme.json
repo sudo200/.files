@@ -1,0 +1,14 @@
+{
+  "font": "Anka/Coder 8.8",
+
+  "bg_normal": "#23272a",
+  "bg_focus": "#7e007f",
+  "bg_urgent": "#ff0000",
+  "bg_minimize": "#99aab5",
+  "bg_systray": "#2c2f33",
+
+  "fg_normal": "#99aab5",
+  "fg_focus": "#f5f5f5",
+  "fg_urgent": "#f5f5f5",
+  "fg_minimize": "#f5f5f5"
+}
