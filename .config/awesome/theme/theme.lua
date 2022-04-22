@@ -1,28 +1,29 @@
----------------------------
--- Default awesome theme --
----------------------------
+-------------------------------------
+--          sudo200's theme        --
+--                                 --
+--       Warning: This uses        --
+-- https://github.com/rxi/json.lua --
+-- for theme parsing from json     --
+--                                 --i
+-- make sure to have it available  --
+-- to awesome's lua interpreter    --
+-------------------------------------
 
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
+local shape = require("gears.shape")
 local themes_path = gfs.get_dir("config")
 
-local theme = {}
+local json = require("json")
 
-theme.font          = "Anka/Coder 8.8"
+local file = io.open(themes_path .. "theme/theme.json", "r")
 
-theme.bg_normal     = "#23272a"
-theme.bg_focus      = "#7e007f"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#99aab5"
-theme.bg_systray    = "#2c2f33"
+local theme = json.decode(file:read("*a"))
 
-theme.fg_normal     = "#99aab5"
-theme.fg_focus      = "#f5f5f5"
-theme.fg_urgent     = "#f5f5f5"
-theme.fg_minimize   = "#f5f5f5"
+file:close()
 
 theme.useless_gap   = dpi(2)
 theme.border_width  = dpi(2)
@@ -30,18 +31,11 @@ theme.border_normal = theme.bg_normal
 theme.border_focus  = theme.bg_focus
 theme.border_marked = "#91231c"
 
--- There are other variable sets
--- overriding the theme one when
--- defined, the sets are:
--- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
--- tasklist_[bg|fg]_[focus|urgent]
--- titlebar_[bg|fg]_[normal|focus]
--- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
--- mouse_finder_[color|timeout|animate_timeout|radius|factor]
--- prompt_[fg|bg|fg_cursor|bg_cursor|font]
--- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
--- Example:
---theme.taglist_bg_focus = "#ff0000"
+theme.client_shape = function(cr, w, h) shape.rounded_rect(cr, w, h, 5) end
+
+theme.hotkeys_border_width = theme.border_width
+theme.hotkeys_border_color = theme.border_focus
+theme.hotkeys_shape = theme.client_shape
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(4)
@@ -57,6 +51,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- notification_[bg|fg]
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
+theme.notification_shape = theme.client_shape
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
