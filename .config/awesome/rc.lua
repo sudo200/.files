@@ -13,10 +13,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
+local hotkeys_popup = require("awful.hotkeys_popup.widget").new()
 
 -- Widgets
 local net_widgets = require("net_widgets")
@@ -25,10 +22,6 @@ local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
-
--- Load Debian menu entries
-local debian = require("debian.menu")
-local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -64,7 +57,6 @@ terminal = "kitty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
-app_menu = "dmenu_run -p \"Run program\" -sb \"".. beautiful.bg_focus .."\" -sf \"".. beautiful.fg_focus .."\" -nb \"".. beautiful.bg_normal .."\" -nf \"".. beautiful.fg_normal .."\" -fn \"".. beautiful.font  .. "\" -i"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -94,36 +86,9 @@ awful.layout.layouts = {
 }
 -- }}}
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
-}
-
-local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { "open terminal", terminal }
-
-if has_fdo then
-    mymainmenu = freedesktop.menu.build({
-                  menu_terminal,
-                }
-    )
-end
-
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
-
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -192,6 +157,7 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 local mysystray = wibox.widget.systray()
+mysystray:set_base_size(22)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -200,8 +166,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     awful.tag({ "α", "β", "ɣ", "δ", "ε", "ζ", "η", "θ", "ι" }, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -232,11 +196,10 @@ awful.screen.connect_for_each_screen(function(s)
 			      height = 27, })
 
     -- Create a spacer
-    
     local myspacer = wibox.widget({
 	widget = wibox.widget.spacer,
 	orientation = "horizontal",
-	forced_width = 10,
+        forced_width = 10,
 	opacity = 0,
     })
 
@@ -260,7 +223,6 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
 	    myspacer,
             s.mytaglist,
-            s.mypromptbox,
           },
           s.mytasklist, -- Middle widget
           { -- Right widgets
@@ -279,7 +241,12 @@ awful.screen.connect_for_each_screen(function(s)
 		color_buf = '#00f'
 	    }),
 	    cpu_widget(),
-            mysystray,
+	    {
+              layout = wibox.container.margin,
+	      top = 1,
+	      left = 2,
+	      mysystray
+	    },
             mytextclock,
 	    s.mylayoutbox,
 	    myspacer,
@@ -292,7 +259,6 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -300,7 +266,7 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+    awful.key({ modkey,           }, "s",      function() hotkeys_popup:show_help() end,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
@@ -321,8 +287,6 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -381,22 +345,28 @@ globalkeys = gears.table.join(
               end,
               {description = "restore minimized", group = "client"}),
 
-    -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "p",  function() awful.spawn(app_menu) end,
+    awful.key({ modkey }, "p",  function() awful.spawn(
+	    "sh -c 'ID=$(tabbed -t \""
+	    ..beautiful.bg_focus..
+	    "\" -T \""
+	    ..beautiful.fg_focus..
+	    "\" -u \""
+	    ..beautiful.bg_normal..
+	    "\" -U \""
+	    ..beautiful.fg_normal..
+	    "\" -d -c -g \"=1916x39\"); sleep 0.12; dmenu_run -w \"$ID\" -p \"Run program\" -sb \""
+	    ..beautiful.bg_focus..
+	    "\" -sf \""
+	    ..beautiful.fg_focus..
+	    "\" -nb \""
+	    ..beautiful.bg_normal..
+	    "\" -nf \""
+	    ..beautiful.fg_normal..
+	    "\" -fn \""
+	    ..beautiful.font..
+	    "\" -i'"
+	    ) end,
               {description = "show the application menu", group = "launcher"})
 )
 
@@ -584,11 +554,8 @@ client.connect_signal("manage", function (c)
         awful.placement.no_offscreen(c)
     end
 
-    -- rounded corners
-
-    c.shape = function(cr,w,h)
-	gears.shape.rounded_rect(cr,w,h,5)
-    end
+    -- Set shape
+    c.shape = beautiful.client_shape
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.

@@ -4,7 +4,7 @@
 --       Warning: This uses        --
 -- https://github.com/rxi/json.lua --
 -- for theme parsing from json     --
---                                 --i
+--                                 --
 -- make sure to have it available  --
 -- to awesome's lua interpreter    --
 -------------------------------------
@@ -37,6 +37,8 @@ theme.hotkeys_border_width = theme.border_width
 theme.hotkeys_border_color = theme.border_focus
 theme.hotkeys_shape = theme.client_shape
 
+theme.bg_systray = theme.bg_normal
+
 -- Generate taglist squares:
 local taglist_square_size = dpi(4)
 theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
@@ -46,26 +48,12 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, theme.fg_normal
 )
 
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
 theme.notification_shape = theme.client_shape
 
--- Variables set for theming the menu:
--- menu_[bg|fg]_[normal|focus]
--- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."theme/submenu.png"
 theme.menu_height = dpi(15)
 theme.menu_width  = dpi(100)
 
--- You can add as many variables as
--- you wish and access them by using
--- beautiful.variable in your rc.lua
---theme.bg_widget = "#cc0000"
-
--- Define the image to load
 theme.titlebar_close_button_normal = themes_path.."theme/titlebar/close_normal.png"
 theme.titlebar_close_button_focus  = themes_path.."theme/titlebar/close_focus.png"
 
@@ -111,9 +99,6 @@ theme.layout_cornernw = themes_path.."theme/layouts/cornernww.png"
 theme.layout_cornerne = themes_path.."theme/layouts/cornernew.png"
 theme.layout_cornersw = themes_path.."theme/layouts/cornersww.png"
 theme.layout_cornerse = themes_path.."theme/layouts/cornersew.png"
-
--- Awesome icon:
-theme.awesome_icon = themes_path.."theme/awesome-icon.png"
 
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
