@@ -23,6 +23,8 @@ local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 
+local run_shell = require("awesome-wm-widgets.run-shell.run-shell")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -346,27 +348,7 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Menubar
-    awful.key({ modkey }, "p",  function() awful.spawn(
-	    "sh -c 'ID=$(tabbed -t \""
-	    ..beautiful.bg_focus..
-	    "\" -T \""
-	    ..beautiful.fg_focus..
-	    "\" -u \""
-	    ..beautiful.bg_normal..
-	    "\" -U \""
-	    ..beautiful.fg_normal..
-	    "\" -d -c -g \"=1916x39\"); sleep 0.12; dmenu_run -w \"$ID\" -p \"Run program\" -sb \""
-	    ..beautiful.bg_focus..
-	    "\" -sf \""
-	    ..beautiful.fg_focus..
-	    "\" -nb \""
-	    ..beautiful.bg_normal..
-	    "\" -nf \""
-	    ..beautiful.fg_normal..
-	    "\" -fn \""
-	    ..beautiful.font..
-	    "\" -i'"
-	    ) end,
+    awful.key({ modkey }, "p",  function() run_shell.launch() end,
               {description = "show the application menu", group = "launcher"})
 )
 
