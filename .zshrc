@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Aliases
-alias neofetch='neofetch --ascii .neofetch'
+alias neofetch='neofetch --ascii ~/.neofetch'
 alias setscreens='xrandr --auto --output HDMI-A-1 --mode 1920x1080 --right-of HDMI-A-0'
 alias top='bpytop'
 alias matrix='cmatrix'
@@ -10,6 +10,9 @@ alias clock='tty-clock -bcsxC 6 '
 alias lolcat='gay -i 2d -c 24 --pan'
 
 alias ssh='TERM="xterm-color" ssh -X'
+
+# Env Variables
+export FZF_DEFAULT_OPTS=""
 
 # MOTD-command
 MOTD="curl -sk https://raspimatic.gratzer.at/addons/red/weather/temp | xargs -0 cbonsai -pm"
