@@ -31,6 +31,8 @@ theme.border_normal = theme.bg_normal
 theme.border_focus  = theme.bg_focus
 theme.border_marked = "#91231c"
 
+theme.wibar_border_width = dpi(1)
+
 theme.client_shape = function(cr, w, h) shape.rounded_rect(cr, w, h, 5) end
 
 theme.hotkeys_border_width = theme.border_width
@@ -38,15 +40,6 @@ theme.hotkeys_border_color = theme.border_focus
 theme.hotkeys_shape = theme.client_shape
 
 theme.bg_systray = theme.bg_normal
-
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
-)
 
 theme.notification_shape = theme.client_shape
 
@@ -82,7 +75,6 @@ theme.titlebar_maximized_button_focus_active  = themes_path.."theme/titlebar/max
 
 theme.wallpaper = themes_path.."theme/background.jpg"
 
--- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."theme/layouts/fairhw.png"
 theme.layout_fairv = themes_path.."theme/layouts/fairvw.png"
 theme.layout_floating  = themes_path.."theme/layouts/floatingw.png"

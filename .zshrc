@@ -9,10 +9,13 @@ alias matrix='cmatrix'
 alias clock='tty-clock -bcsxC 6 '
 alias lolcat='gay -i 2d -c 24 --pan'
 
+alias update='sudo sh -c "apt-get update && apt-get upgrade -y"'
+
 alias ssh='TERM="xterm-color" ssh -X'
 
 # Env Variables
 export FZF_DEFAULT_OPTS=""
+export LUA_INIT=""
 
 # MOTD-command
 MOTD="curl -sk https://raspimatic.gratzer.at/addons/red/weather/temp | xargs -0 cbonsai -pm"

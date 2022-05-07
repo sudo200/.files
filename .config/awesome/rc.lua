@@ -166,7 +166,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "α", "β", "ɣ", "δ", "ε", "ζ", "η", "θ", "ι" }, s, awful.layout.layouts[1])
+    awful.tag({ "α", "β", "ɣ", "δ", "ε", "ζ", "η", "θ", "ι" }, s, awful.layout.suit.tile)
 
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -187,15 +187,18 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
         filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        buttons = tasklist_buttons,
+
+	style = {
+	  shape = gears.shape.rounded_bar,
+	},
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s,
-    			      shape = function(cr, width, height)
-    						gears.shape.rounded_rect(cr, width, height, 10)
-					end, bg = "#00000000",
-			      height = 27, })
+    s.mywibox = awful.wibar({ position = "top", screen = s, bg = "#00000000", border_width = 0,
+			      height = 27,
+			      opacity = 0.9
+		      })
 
     -- Create a spacer
     local myspacer = wibox.widget({
@@ -217,7 +220,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    shape = function(cr, width, height)
               gears.shape.rounded_rect(cr, width, height, 10)
             end,
-	    shape_border_width = 1,
+	    shape_border_width = beautiful.wibar_border_width,
 	    shape_border_color = beautiful.border_focus,
 	  {
           layout = wibox.layout.align.horizontal,
@@ -245,7 +248,7 @@ awful.screen.connect_for_each_screen(function(s)
 	    cpu_widget(),
 	    {
               layout = wibox.container.margin,
-	      top = 1,
+	      top = beautiful.wibar_border_width,
 	      left = 2,
 	      mysystray
 	    },
@@ -349,7 +352,7 @@ globalkeys = gears.table.join(
 
     -- Menubar
     awful.key({ modkey }, "p",  function() run_shell.launch() end,
-              {description = "show the application menu", group = "launcher"})
+              {description = "open a run prompt", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -591,8 +594,9 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 do -- Startup applications
   local cmds = {
-	"kdeconnect-indicator",
-	"discord",
+	"kdeconnect-indicator",-- KDE Connect widget
+	"discord",-- Discord
+	"compton -bcCo 1"-- X compositor
 	}
 
   for _,i in pairs(cmds) do
