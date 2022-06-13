@@ -14,8 +14,12 @@ alias update='sudo sh -c "apt-get update && apt-get upgrade -y"'
 alias ssh='TERM="xterm-color" ssh -X'
 
 # Env Variables
-export FZF_DEFAULT_OPTS=""
+export FZF_DEFAULT_OPTS="--border --reverse"
 export LUA_INIT=""
+
+# Terminal Transparency
+transset -a .8
+clear
 
 # MOTD-command
 MOTD="curl -sk https://raspimatic.gratzer.at/addons/red/weather/temp | xargs -0 cbonsai -pm"

@@ -596,7 +596,7 @@ do -- Startup applications
   local cmds = {
 	"kdeconnect-indicator",-- KDE Connect widget
 	"discord",-- Discord
-	"compton -bcCo 1"-- X compositor
+	"compton -bcCo 1 -o 0 --xrender-sync --xrender-sync-fence"-- X compositor
 	}
 
   for _,i in pairs(cmds) do
