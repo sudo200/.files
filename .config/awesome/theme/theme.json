@@ -1,8 +1,8 @@
 {
-  "font": "Anka/Coder bold 10.5",
+  "font": "Anka/Coder bold 9",
 
   "bg_normal": "#23272a",
-  "bg_focus": "#e15b33",
+  "bg_focus": "#0097B1",
   "bg_urgent": "#fcc06f",
   "bg_minimize": "#e17b29",
   "bg_systray": "#23272a",
