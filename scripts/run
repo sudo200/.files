@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+print -rC1 -- ${(ko)commands} | # Get all executables from path
+fzf +m --reverse --border --preview="man {}" |
+xargs -r setsid setsid;
+exit 0;
+

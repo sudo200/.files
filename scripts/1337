@@ -1,0 +1,9 @@
+#!/bin/sh
+
+kitty --detach sh -c 'sleep 2; tty-clock -bcsxC 6';
+kitty --detach sh -c 'sleep 0.4; tput civis; bad-apple; tput cnorm;';
+kitty --detach sh -c 'sleep 1.2; cbonsai -li';
+kitty --detach sh -c 'sleep 0.8; pipes.sh -p 2 -f 100';
+kitty --detach sh -c 'sleep 1.6; cmatrix';
+kitty --detach sh -c 'tput civis; neofetch --ascii ~/.neofetch; read lol; tput cnorm;';
+

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+printf 'Search:\n~$ ';
+read q;
+
+ytfzf -I L "$q" | xargs -r mpv --volume=40;
+

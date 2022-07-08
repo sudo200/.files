@@ -1,0 +1,15 @@
+#!/bin/sh
+
+EDITOR="nvim"
+FILE="$HOME/scriptworkfiles/todo";
+
+OPTION=$(echo "Show TODOs\nEdit TODOs" | fzf --tac +m);
+
+if [ "$OPTION" = 'Show TODOs' ];
+then
+  exec less "$FILE";
+elif [ "$OPTION" = 'Edit TODOs' ];
+then
+  exec $EDITOR "$FILE";
+fi
+

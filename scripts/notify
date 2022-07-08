@@ -1,0 +1,4 @@
+#!/bin/sh
+
+awesome-client "require('naughty').notify({ text='$(cat | sed -n -e 'H;${x;s/\n/\\n/g;s/^\\n//;p;}')' })"
+

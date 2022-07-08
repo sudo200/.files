@@ -1,0 +1,6 @@
+#!/bin/sh
+
+FILE="/home/fabian/Musik/radios.txt";
+
+cat $FILE | fzf --border --reverse +m | xargs -r mpv --volume=40;
+

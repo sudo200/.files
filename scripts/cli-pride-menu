@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "Object.keys(require('$(which cli-pride-flags)/../../cli-pride-flags/src/flags.json')).forEach(item => console.log(item))" | node | fzf --tac +m | xargs -r cli-pride-flags

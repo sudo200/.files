@@ -1,0 +1,24 @@
+#!/bin/sh
+
+STREAMERS="$HOME/scriptworkfiles/streamers.txt";
+PREFIX="https://twitch.tv/";
+
+MPV_DEFAULT_OPTS="--volume=40";
+
+
+openstream() {
+  setsid -f mpv $MPV_DEFAULT_OPTS "$(echo "$1" | awk "{print \"$PREFIX\" \$0}" | tr '\0' '\n')";
+  tc connect "$1";
+}
+
+if [ "$1" ];
+then # Use 1st arg as streamer
+  openstream "$1";
+elif [ -f "$STREAMERS" ];
+then # Else search for streamer in file
+  openstream "$(cat "$STREAMERS" | sort -n | fzf --border +m)";
+else
+  touch "$STREAMERS";
+  echo "Created file at '$STREAMERS'\nAdd one streamer per line";
+fi
+

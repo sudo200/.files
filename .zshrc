@@ -8,6 +8,7 @@ alias top='bpytop'
 alias matrix='cmatrix'
 alias clock='tty-clock -bcsxC 6 '
 alias lolcat='gay -i 2d -c 24 --pan'
+alias figlet='figlet -w "$COLUMNS"'
 
 alias update='sudo sh -c "apt-get update && apt-get upgrade -y"'
 
@@ -18,11 +19,18 @@ export FZF_DEFAULT_OPTS="--border --reverse"
 export LUA_INIT=""
 
 # Terminal Transparency
-transset -a .8
-clear
+if printenv KITTY_WINDOW_ID;
+then
+  transset -a .8;
+  clear;
+fi
 
 # MOTD-command
 MOTD="curl -sk https://raspimatic.gratzer.at/addons/red/weather/temp | xargs -0 cbonsai -pm"
+
+# For GPG
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/fabian/.oh-my-zsh"
@@ -126,3 +134,4 @@ source $ZSH/oh-my-zsh.sh
 bash -c "$MOTD"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+

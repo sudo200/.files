@@ -1,0 +1,7 @@
+#!/bin/sh
+
+apt-cache search '' |
+	sort |
+	cut --delimiter ' ' --fields 1 |
+	fzf -m --cycle --preview='apt-cache show {1}' --preview-window=top |
+	xargs -r sudo apt install -y

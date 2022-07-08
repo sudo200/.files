@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SEARCHPATH="/run/user/1000/gvfs/smb-share:server=nas.gratzer.at,share=daten/Misc/Musik";
+
+ls "$SEARCHPATH" | sort -n | fzf --reverse --border -m --preview "mediainfo $SEARCHPATH/{}" | awk "{print \"$SEARCHPATH/\" \$0}" | tr '\n' '\0' | xargs -r -0 mpv --volume=40;
+

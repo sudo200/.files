@@ -1,0 +1,16 @@
+#!/bin/sh
+
+x-terminal-emulator -e sh -c 'OPTION=$(echo "On\nOff" | fzf +m --reverse --border);
+
+STATE="";
+
+if [ "$OPTION" = 'On' ];
+then
+  STATE=1;
+elif [ "$OPTION" = 'Off' ];
+then
+  STATE=0;
+fi
+
+curl -sk https://raspimatic.gratzer.at/addons/red/fan\?state\=$STATE > /dev/null;';
+

@@ -50,6 +50,14 @@ do
 end
 -- }}}
 
+
+-- {{{ Splash video
+do
+awful.spawn("ffplay -fs -autoexit -noborder '" .. gears.filesystem.get_configuration_dir() .. "splash_video.webm'");      
+end   
+-- }}}
+
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
@@ -98,6 +106,7 @@ mytextclock = wibox.widget.textclock()
 
 local cw = calendar_widget()
 
+-- Attach calendar widget to textclock
 mytextclock:connect_signal("button::press",
     function(_, _, _, button)
         if button == 1 then cw.toggle() end
@@ -162,6 +171,7 @@ local mysystray = wibox.widget.systray()
 mysystray:set_base_size(22)
 
 awful.screen.connect_for_each_screen(function(s)
+
     -- Wallpaper
     set_wallpaper(s)
 
@@ -180,7 +190,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
+        buttons = taglist_buttons,
     }
 
     -- Create a tasklist widget

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+SEARCHPATH="/run/user/1000/gvfs/smb-share:server=nas.gratzer.at,share=daten/Misc/Musik";
+
+option="$(
+  echo 'Queue tracks
+Play
+Pause
+Show Queue
+Show Status' | fzf --phony --border --reverse +m --header="Main menu"
+)";
+
+case "$option" in
+  "Queue tracks")
+    ls "$SEARCHPATH" |
+    sort |
+    fzf --border --reverse -m --header="Queue tracks" --preview "mediainfo $SEARCHPATH/{}" |
+    awk "{print \"$SEARCHPATH/\" \$0}" |
+    while read track; do
+      cmus-remote -q "$track";
+    done;
+    ;;
+  "Play")
+    cmus-remote -p;
+    ;;
+  "Pause")
+    cmus_remote -U;
+    ;;
+  "Show Queue")
+    cmus-remote -q -Q;
+    ;;
+  "Show Status")
+    cmus-remote -Q;
+    ;;
+esac
+

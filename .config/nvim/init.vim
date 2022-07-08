@@ -19,7 +19,5 @@
   set smartcase         "if searching text contains uppercase case will not be ignored
 " Lookings
   set number           "line number
-  set cursorline       "hilight the line of the cursor
-  set cursorcolumn     "hilight the column of the cursor
   set nowrap           "no line wrapping
 
