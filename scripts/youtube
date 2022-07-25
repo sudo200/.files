@@ -3,5 +3,5 @@
 printf 'Search:\n~$ ';
 read q;
 
-ytfzf -I L "$q" | xargs -r mpv --volume=40;
+ytfzf -I L "$q" | xargs -r setsid mpv --volume=40;
 

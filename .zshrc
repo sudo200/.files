@@ -15,7 +15,7 @@ alias update='sudo sh -c "apt-get update && apt-get upgrade -y"'
 alias ssh='TERM="xterm-color" ssh -X'
 
 # Env Variables
-export FZF_DEFAULT_OPTS="--border --reverse"
+export FZF_DEFAULT_OPTS="--border --reverse --color='bg:#23272a,fg:#99aab5,bg+:#0097B1,fg+:#2c2f33,hl:#e17b29,hl+:#fcc06f,info:#fcc06f,spinner:#e17b29,header:#e17b29,border:#0097B1,prompt:#99aab5,pointer:#2c2f33,marker:#2c2f33'"
 export LUA_INIT=""
 
 # Terminal Transparency

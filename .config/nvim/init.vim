@@ -7,6 +7,7 @@
   filetype plugin on
   filetype plugin indent on
   syntax on
+
 " Some useful settings
   set smartindent
   set expandtab         "tab to spaces
@@ -17,7 +18,11 @@
   set foldlevel=99
   set ignorecase        "ignore the case when search texts
   set smartcase         "if searching text contains uppercase case will not be ignored
+
 " Lookings
   set number           "line number
   set nowrap           "no line wrapping
+
+" Theme
+  
 
